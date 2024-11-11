@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+</head>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com"> 
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gabarito&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Candal&family=Inter&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BI Kadesh</title>
+    <link rel="icon" href="https://kadeshepi.com.br/wp-content/uploads/2024/04/logo-kadesh-site.png" type="image/png">
+    <style>
+        body {
+        margin: 5;
+        font-family: 'gabarito', sans-serif;
+        color: #b02427;
+        background-image: url('https://i.ibb.co/1Gg3Mgs/back.png');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        }
+
+        .container {
+            display: flex;
+        }
+
+        .navbar {
+            width: 200px;
+            font-family: 'gabarito', sans-serif;
+            transition: width 0.3s;
+            background: transparent;
+            border: rgba(255, 255, 255, 2);
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0px 0 10px rgba(0, 0, 0, 2);
+            height: 98vh;
+            color: #b02427;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .navbar.collapsed {
+            width: 70px;
+        }
+
+        .navbar img {
+            width: 50%;
+            padding: 0px;
+            display: flex;
+            transition: width 0.3s;
+        }
+
+        .navbar.collapsed img {
+            width: 60%;
+            margin: 0 auto;
+        }
+
+        .menu {
+            list-style: none;
+            padding: 0;
+            width: 100%;
+        }
+
+        .menu-item {
+            color: #b02427;
+            padding: 10px;
+            cursor: pointer;
+            position: relative;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        .menu-item img {
+            width: 24px;
+            height: 24px;
+            margin-right: 10px;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .menu-item a img {
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .menu-item a:hover img {
+            transform: scale(3.1);
+        }
+
+        .navbar.collapsed .menu-item span {
+            display: none;
+        }
+
+
+        .menu-item:hover {
+            color: #b02427;
+            transition: transform 0.2s ease-in-out;
+            transform: scale(1.1);
+            font-weight: bold;
+            text-decoration: underline;
+        }
+
+
+        .submenu-container {
+            display: none;
+            padding-left: 0;
+            margin-top: 10px;
+        }
+
+        .submenu {
+            list-style: none;
+            padding-left: 20px;
+        }
+
+
+        .submenu a {
+            color: #b02427;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            padding: 8px;
+            border-left: 2px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .submenu a:hover {
+            color: #b02427;
+            font-weight: bold;
+            text-decoration: underline;
+            border-left: 2px solid #b02427;
+        }
+
+
+        .menu-item.open + .submenu-container {
+            display: block;
+        }
+
+        .content {
+            flex-grow: 1;
+            flex-direction: column;
+            padding: 20px;
+            margin-bottom: 0;
+            margin-left: 20px;
+            width: calc(100% - 220px);
+            display: flex;
+            justify-content: top;
+        }
+
+        .content h1 {
+            font-size: 36px;
+        }
+
+        .content p {
+            font-size: 18px;
+        }
+
+        .content img {
+        width: 44%;
+        height: auto;
+        max-width: 100%;
+        margin-top: 0%;
+        margin-left: 40%;
+        }
+
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+    </style>
+    <script>
+
+        function toggleSubmenu(event) {
+            const item = event.currentTarget;
+            const submenuContainer = item.nextElementSibling;
+            const navbar = document.querySelector('.navbar');
+
+
+            item.classList.toggle('open');
+            submenuContainer.style.display = item.classList.contains('open') ? 'block' : 'none';
+
+
+            if (navbar.classList.contains('collapsed')) {
+                navbar.classList.remove('collapsed');
+            }
+        }
+
+
+        function toggleNavbar() {
+            const navbar = document.querySelector('.navbar');
+            const submenus = document.querySelectorAll('.submenu-container');
+
+            navbar.classList.toggle('collapsed');
+
+
+            if (navbar.classList.contains('collapsed')) {
+                submenus.forEach(submenu => submenu.style.display = 'none');
+                document.querySelectorAll('.menu-item').forEach(item => item.classList.remove('open'));
+            }
+        }
+
+
+        function loadIframe(iframeSrc) {
+            document.querySelector('.content').innerHTML = `<iframe title="Comercial" src="${iframeSrc}" allowfullscreen="true"></iframe>`;
+
+
+            const navbar = document.querySelector('.navbar');
+            if (!navbar.classList.contains('collapsed')) {
+                navbar.classList.add('collapsed');
+                document.querySelectorAll('.submenu-container').forEach(submenu => submenu.style.display = 'none');
+                document.querySelectorAll('.menu-item').forEach(item => item.classList.remove('open'));
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <nav class="navbar">
+            <img src="https://kadeshepi.com.br/wp-content/uploads/2024/04/logo-kadesh-site.png" alt="Logo Kadesh">
+            <ul class="menu">
+                        <!-- Menu Comercial -->
+        <li class="menu-item" onclick="toggleSubmenu(event);">
+            <img src="https://i.ibb.co/fMt9fpM/comercial.png" alt="Ícone Comercial">
+            <span>Comercial</span>
+            <span>&#9662;</span>
+        </li>
+        <div class="submenu-container">
+            <ul class="submenu">
+                <li><a href="#" onclick="loadIframe('https://app.powerbi.com/reportEmbed?reportId=2750191c-962c-4141-90c1-3997bc3c4027&autoAuth=true&ctid=ce5d0a51-c14a-46a8-b684-d1ce8a5b652e')">Novo</a></li>
+                <li><a href="#" onclick="loadIframe('https://app.powerbi.com/reportEmbed?reportId=a9d2c8d0-7e1d-4d14-a5a6-34c246442f9c&autoAuth=true&ctid=ce5d0a51-c14a-46a8-b684-d1ce8a5b652e')">Antigo</a></li>
+                <li><a href="#" onclick="loadIframe('https://app.powerbi.com/reportEmbed?reportId=036170a4-4635-4bc6-ae5b-f22a47f6e5ca&autoAuth=true&ctid=ce5d0a51-c14a-46a8-b684-d1ce8a5b652e')">DT Meta</a></li>
+            </ul>
+        </div>
+        
+        <!-- Menu Contábil -->
+        <li class="menu-item" onclick="toggleSubmenu(event);">
+            <img src="https://i.ibb.co/rZ6GnXJ/contabil.png" alt="Ícone Contábil">
+            <span>Contábil</span>
+            <span>&#9662;</span>
+        </li>
+        <div class="submenu-container">
+            <ul class="submenu">
+                <li><a href="#" onclick="loadIframe('https://app.powerbi.com/reportEmbed?reportId=9c1540e7-1fcf-454a-a292-ec13f8f45a99&autoAuth=true&ctid=ce5d0a51-c14a-46a8-b684-d1ce8a5b652e')">Geral</a></li>
+            </ul>
+        </div>
+        
+        <!-- Menu Compras -->
+        <li class="menu-item" onclick="toggleSubmenu(event);">
+            <img src="https://i.ibb.co/PT7nw30/compras.png" alt="Ícone Compras">
+            <span>Compras</span>
+            <span>&#9662;</span>
+        </li>
+        <div class="submenu-container">
+            <ul class="submenu">
+                <li><a href="#" onclick="loadIframe('https://app.powerbi.com/reportEmbed?reportId=83283912-1468-4325-ac4a-b3aded4ba707&autoAuth=true&ctid=ce5d0a51-c14a-46a8-b684-d1ce8a5b652e')">Geral</a></li>
+                <li><a href="#" onclick="loadIframe('https://app.powerbi.com/reportEmbed?reportId=f04420c5-bf09-4a3c-99d6-7624d3279ea4&autoAuth=true&ctid=ce5d0a51-c14a-46a8-b684-d1ce8a5b652e')">Estoque em Produção</a></li>
+                <li><a href="#" onclick="loadIframe('https://app.powerbi.com/reportEmbed?reportId=11c2441c-8087-4413-9b86-dc151e8b8987&autoAuth=true&ctid=ce5d0a51-c14a-46a8-b684-d1ce8a5b652e')">Estoque de Couros</a></li>
+            </ul>
+        </div>
+
+        <!-- Menu Financeiro -->
+        <li class="menu-item" onclick="toggleSubmenu(event);">
+            <img src="https://i.ibb.co/pvzJGmr/financeiro.png" alt="Ícone Financeiro">
+            <span>Financeiro</span>
+            <span>&#9662;</span>
+        </li>
+        <div class="submenu-container">
+            <ul class="submenu">
+                <li><a href="#" onclick="loadIframe('https://app.powerbi.com/reportEmbed?reportId=e55ab3ea-dc10-4d86-acae-48ef53ad8f3c&autoAuth=true&ctid=ce5d0a51-c14a-46a8-b684-d1ce8a5b652e')">Geral</a></li>
+                <li><a href="#" onclick="loadIframe('https://app.powerbi.com/reportEmbed?reportId=aa97fd4d-57e4-4469-b92e-42486e6874bf&autoAuth=true&ctid=ce5d0a51-c14a-46a8-b684-d1ce8a5b652e')">Contas a Receber</a></li>
+                <li><a href="#" onclick="loadIframe('https://app.powerbi.com/reportEmbed?reportId=5ce1a766-b181-4f3e-96d8-a6f8a8ec6a88&autoAuth=true&ctid=ce5d0a51-c14a-46a8-b684-d1ce8a5b652e')">Custos</a></li>
+                <li><a href="#" onclick="loadIframe('https://app.powerbi.com/reportEmbed?reportId=1e7224b1-5f04-4cfd-8d2a-531160779d8a&autoAuth=true&ctid=ce5d0a51-c14a-46a8-b684-d1ce8a5b652e')">Despesas com Viagens</a></li>
+                <li><a href="#" onclick="loadIframe('https://app.powerbi.com/reportEmbed?reportId=4fcd219b-869d-4045-bc4e-da0d38786911&autoAuth=true&ctid=ce5d0a51-c14a-46a8-b684-d1ce8a5b652e')">Salários</a></li>
+            </ul>
+        </div>
+
+        <!-- Menu Produção -->
+        <li class="menu-item" onclick="toggleSubmenu(event);">
+            <img src="https://i.ibb.co/rxDFj3X/producao.png" alt="Ícone Produção">
+            <span>Produção</span>
+            <span>&#9662;</span>
+        </li>
+        <div class="submenu-container">
+            <ul class="submenu">
+                <li><a href="#" onclick="loadIframe('https://app.powerbi.com/reportEmbed?reportId=8bb9db49-1166-4f7a-b6a3-dc5cc23d240a&autoAuth=true&ctid=ce5d0a51-c14a-46a8-b684-d1ce8a5b652e')">Geral</a></li>
+                <li><a href="#" onclick="loadIframe('https://app.powerbi.com/reportEmbed?reportId=f7ae5017-4334-4bab-8527-e3b25fb4ccdd&autoAuth=true&ctid=ce5d0a51-c14a-46a8-b684-d1ce8a5b652e')">Carteira</a></li>
+            </ul>
+        </div>
+    </ul>
+</nav>
+            <main class="content">
+                <h1>Bem-vindo a Kadesh Business Intelligence!<br> 
+                    Selecione uma categoria para visualizar os relatórios.
+                </h1>
+                <img src="https://i.ibb.co/qCbwSjT/kaka.png" alt="kaka">            
+        </main>
+    </div>
+</body>
+</html>
